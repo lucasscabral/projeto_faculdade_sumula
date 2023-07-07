@@ -1,0 +1,40 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL_TESTE")
+}
+
+model Time {
+  id        Int       @id @default(autoincrement())
+  nome      String    @unique
+  jogadores Jogador[]
+
+  @@map("time")
+}
+
+model Jogador {
+  id      Int     @id @default(autoincrement())
+  nome    String
+  cpf     String  @unique
+  posicao Posicao
+  Time    Time?   @relation(fields: [timeId], references: [id])
+  timeId  Int
+
+  @@map("jogador")
+}
+
+enum Posicao {
+  GL
+  ZG
+  LD
+  LE
+  VL
+  ME
+  AT
+}
